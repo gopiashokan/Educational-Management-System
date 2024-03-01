@@ -4,6 +4,7 @@ import time
 import numpy as np
 import pandas as pd
 import psycopg2
+import bcrypt
 import streamlit as st
 from streamlit_option_menu import option_menu
 from streamlit_extras.add_vertical_space import add_vertical_space
@@ -100,6 +101,13 @@ class sql:
                 connection.close()
 
 
+    def encode_password(password):
+        salt = bcrypt.gensalt()
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+        encode = hashed_password.decode('utf-8')
+        return encode
+
+
     def add_user_login_credentials_table(user_id, password, role):
 
         try:
@@ -109,8 +117,12 @@ class sql:
                                           database='project')
             cursor = connection.cursor()
 
+            # Encode the password
+            hashed_password = sql.encode_password(password)
+
+            # Migrate the Data to SQL Table
             cursor.execute(f'''insert into login_credentials(user_id, password, role) 
-                               values('{user_id}', '{password}', '{role}');''')
+                               values('{user_id}', '{hashed_password}', '{role}');''')
             connection.commit()
 
             if user_id != 'admin_1' and role != 'admin':
@@ -136,6 +148,30 @@ class sql:
                 connection.close()
 
 
+    def add_multiple_user_login_credentials_table(df):
+
+        try:
+            connection = psycopg2.connect(host='localhost',
+                                          user='postgres',
+                                          password='root',
+                                          database='project')
+            cursor = connection.cursor()
+
+            cursor.executemany(f'''insert into login_credentials(user_id, password, role) 
+                               values(%s,%s,%s);''', df.values.tolist())
+            connection.commit()
+
+        except Exception as e:
+            add_vertical_space(2)
+            st.markdown(f'<h5 style="text-position:center;color:orange;">{e}</h5>', unsafe_allow_html=True)
+
+        finally:
+            # close the connection
+            if connection:
+                cursor.close()
+                connection.close()
+
+
     def update_user_login_credentials_table(user_id, password, role):
 
         try:
@@ -145,8 +181,12 @@ class sql:
                                           database='project')
             cursor = connection.cursor()
 
+            # Encode the password
+            hashed_password = sql.encode_password(password)
+
+            # Migrate the Data to SQL Table
             cursor.execute(f'''update login_credentials
-                               set password='{password}', role='{role}'
+                               set password='{hashed_password}', role='{role}'
                                where user_id='{user_id}';''')
             connection.commit()
 
@@ -202,18 +242,15 @@ class sql:
                                           database='project')
             cursor = connection.cursor()
 
-            cursor.execute(f'''select * from login_credentials
+            cursor.execute(f'''select password from login_credentials
                             where user_id='{user_id}' and role like '{role}%';''')
             result = cursor.fetchall()
 
-            index = [i for i in range(1, len(result) + 1)]
-            columns = [i[0] for i in cursor.description]
+            # Encoded Password retrieved from SQL Table
+            hashed_password = result[0][0]
 
-            df = pd.DataFrame(result, columns=columns, index=index)
-            df = df.rename_axis('s.no')
-            df = pd.DataFrame(df)
-
-            if password == df['password'].to_list()[0]:
+            # Verify the User Input Password is Matched with Encoded Hashed Password
+            if bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8')):
                 with st.spinner('Logging in...'):
                     time.sleep(2)
                     st.markdown(f'<h5 style="color: green;">LogIn Successfully</h5>', unsafe_allow_html=True)
@@ -604,9 +641,9 @@ class admin:
 
 
     def add_user():
-
+        
+        add_vertical_space(1)
         try:
-            add_vertical_space(1)
             with st.form('Add User'):
                 add_vertical_space(1)
                 col4, col5, col6 = st.columns([0.3, 0.3, 0.4], gap='medium')
@@ -639,9 +676,48 @@ class admin:
                 sql.add_user_login_credentials_table(user_id, password, role)
 
         except Exception as e:
-            add_vertical_space(2)
             st.markdown(f'<h5 style="text-position:center;color:orange;">{e}</h5>', unsafe_allow_html=True)
 
+
+    def add_multiple_users():
+
+        add_vertical_space(1)
+        try:
+            with st.form('Add Multiple Users'):
+                add_vertical_space(1)
+                # Upload File from User and Submit Button
+                login_data_file = st.file_uploader(label='Upload LogIn Data File:', type=['csv', 'xlsx'])
+                add_vertical_space(1)
+                add_users = st.form_submit_button(label='Add Users')
+                add_vertical_space(1)
+
+            if login_data_file is not None and add_users:
+                add_vertical_space(1)
+                with st.spinner('Processing...'):
+                    # Verify the File Type for Reading method
+                    if login_data_file.name.endswith('.csv'):
+                        df = pd.read_csv(login_data_file)
+
+                    elif login_data_file.name.endswith('.xlsx'):
+                        df = pd.read_excel(login_data_file)
+
+                    # Encoded to Password into Hashed Password and Stored in New Column
+                    df['password'] = df['password'].apply(lambda x: sql.encode_password(x))
+
+                    # Migrate the Data to SQL table
+                    sql.add_multiple_user_login_credentials_table(df)
+
+                # Display the Success Message
+                st.markdown(f'<h5 style="text-position:center;color:green;">Users Added Successfully</h5>', unsafe_allow_html=True)
+                
+                # Trigger a rerun to Refresh the Page
+                st.experimental_rerun()
+        
+
+        except Exception as e:
+            # Display the Error Message
+            st.markdown(f'<h5 style="text-position:center;color:orange;">{e}</h5>', unsafe_allow_html=True)
+        
 
     def update_user():
 
@@ -745,8 +821,15 @@ class admin:
                         admin.view_user()
 
                     with tab2:
-                        add_vertical_space(1)
+                        # Add Single User Data in SQL Table
+                        add_vertical_space(2)
+                        st.markdown(f'<h4 style="color:orange;">Add Single User:</h4>', unsafe_allow_html=True)
                         admin.add_user()
+
+                        # Add Multiple Users Data in SQL Table
+                        add_vertical_space(2)
+                        st.markdown(f'<h4 style="color:orange;">Add Multiple Users:</h4>', unsafe_allow_html=True)
+                        admin.add_multiple_users()
 
                     with tab3:
                         add_vertical_space(1)
