@@ -8,6 +8,7 @@ import bcrypt
 import streamlit as st
 from streamlit_option_menu import option_menu
 from streamlit_extras.add_vertical_space import add_vertical_space
+from dotenv import load_dotenv
 from PIL import Image
 from sklearn.model_selection import train_test_split
 from tensorflow.keras import layers, models
@@ -15,11 +16,12 @@ from tensorflow.keras.models import load_model
 import warnings
 
 warnings.filterwarnings('ignore')
+load_dotenv()
 
 
 def streamlit_config():
     # page configuration
-    st.set_page_config(page_title='Project', layout="wide")
+    st.set_page_config(page_title='EMS', page_icon='book', layout="wide")
 
     # page header transparent color
     page_background_color = """
@@ -35,7 +37,7 @@ def streamlit_config():
     st.markdown(page_background_color, unsafe_allow_html=True)
 
     # title and position
-    st.markdown(f'<h1 style="text-align: center;">PROJECT</h1>',
+    st.markdown(f'<h1 style="text-align: center;">EDUCATIONAL MANAGEMENT SYSTEM</h1>',
                 unsafe_allow_html=True)
     add_vertical_space(4)
 
@@ -46,16 +48,16 @@ class sql:
     def create_database():
 
         try:
-            connection = psycopg2.connect(host="localhost",
-                                          user='postgres',
-                                          password='root',
-                                          database='postgres')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DEFAULT_DATABASE'))
 
             connection.autocommit = True
             cursor = connection.cursor()
 
             # create a new database
-            cursor.execute(f"create database project;")
+            cursor.execute(f"create database {os.getenv('DATABASE')};")
 
         # If database already exist means skip the process
         except psycopg2.errors.DuplicateDatabase:
@@ -75,10 +77,10 @@ class sql:
     def create_login_credentials_table():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
 
             cursor = connection.cursor()
 
@@ -111,10 +113,10 @@ class sql:
     def add_user_login_credentials_table(user_id, password, role):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             # Encode the password
@@ -151,10 +153,10 @@ class sql:
     def add_multiple_user_login_credentials_table(df):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.executemany(f'''insert into login_credentials(user_id, password, role) 
@@ -175,10 +177,10 @@ class sql:
     def update_user_login_credentials_table(user_id, password, role):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             # Encode the password
@@ -208,10 +210,10 @@ class sql:
     def delete_user_login_credentials_table(user_id, role):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''delete from login_credentials
@@ -236,10 +238,10 @@ class sql:
     def login_credentials_verification(user_id, password, role):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select password from login_credentials
@@ -278,17 +280,17 @@ class sql:
     def create_test_qa_table():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
 
             cursor = connection.cursor()
 
             cursor.execute(f'''create table if not exists test_qa(
                                     test_id         varchar(255) not null,
+                                    concept         varchar(255) not null,
                                     question_no     varchar(255) not null,
-                                    concept		    varchar(255) not null,
                                     question        varchar(255) not null,
                                     option_a        varchar(255) not null,
                                     option_b        varchar(255) not null,
@@ -313,13 +315,13 @@ class sql:
     def migrate_test_qa_table(df):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
-            cursor.executemany(f'''insert into test_qa(test_id, question_no, concept, question, 
+            cursor.executemany(f'''insert into test_qa(test_id, concept, question_no, question, 
                                                        option_a, option_b, option_c, option_d, answer) 
                                    values(%s,%s,%s,%s,%s,%s,%s,%s,%s);''', df.values.tolist())
             connection.commit()
@@ -340,10 +342,10 @@ class sql:
     def create_student_test_table():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
 
             cursor = connection.cursor()
 
@@ -373,10 +375,10 @@ class sql:
     def migrate_student_test_table(df):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.executemany(f'''insert into student_test(student_id, test_id, concept, question_no, question, answer, mark) 
@@ -406,10 +408,10 @@ class sql:
     def create_student_exam_table():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
 
             cursor = connection.cursor()
 
@@ -437,10 +439,10 @@ class sql:
 
     def user_id():
 
-        connection = psycopg2.connect(host='localhost',
-                                      user='postgres',
-                                      password='root',
-                                      database='project')
+        connection = psycopg2.connect(host=os.getenv('HOST'),
+                                      user=os.getenv('USER'),
+                                      password=os.getenv('PASSWORD'),
+                                      database=os.getenv('DATABASE'))
         cursor = connection.cursor()
 
         cursor.execute(f'''select distinct user_id from login_credentials
@@ -456,10 +458,10 @@ class sql:
     def create_status_table():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
 
             cursor = connection.cursor()
 
@@ -483,10 +485,10 @@ class sql:
     def delete_exam_marks_status_table(identifier, status):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''delete from status
@@ -514,10 +516,10 @@ class sql:
     def migrate_status_table(identifier, status):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''insert into status(identifier, status) 
@@ -545,10 +547,10 @@ class sql:
     def create_student_marks_table():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
 
             cursor = connection.cursor()
 
@@ -609,7 +611,7 @@ class admin:
                             unsafe_allow_html=True)
 
 
-        elif user_id is not None and password is not None:
+        elif user_id != '' and password != '':
 
             add_vertical_space(1)
             col1, col2, col3, col4 = st.columns([0.1, 0.4, 0.4, 0.1], gap='medium')
@@ -621,10 +623,10 @@ class admin:
 
 
     def view_user():
-        connection = psycopg2.connect(host='localhost',
-                                      user='postgres',
-                                      password='root',
-                                      database='project')
+        connection = psycopg2.connect(host=os.getenv('HOST'),
+                                      user=os.getenv('USER'),
+                                      password=os.getenv('PASSWORD'),
+                                      database=os.getenv('DATABASE'))
         cursor = connection.cursor()
 
         cursor.execute(f'''select user_id, role from login_credentials
@@ -659,19 +661,19 @@ class admin:
 
                 with col6:
                     # Create the target folder if it doesn't exist
-                    os.makedirs(r'Result\handwriting\matched\concepts', exist_ok=True)
+                    os.makedirs(os.path.join('Result','handwriting','matched','concepts'), exist_ok=True)
 
                     # Check Subfolders inside the concepts folder or not
-                    if len(os.listdir(r'Result\handwriting\matched\concepts'))==0:
+                    if len(os.listdir(os.path.join('Result','handwriting','matched','concepts')))==0:
                         option = ['admin', 'teacher', 'student']
                     else:
                         option = ['admin', 'teacher', 'student'] +\
-                                 [f'assistant - {i}' for i in os.listdir(r'Result\handwriting\matched\concepts')]
+                                 [f'assistant - {i}' for i in os.listdir(os.path.join('Result','handwriting','matched','concepts'))]
                                 
                     # Get User Input 
                     role = st.selectbox(label='Role ', options=option)
 
-            if add_user and user_id is not None and password is not None:
+            if add_user and user_id != '' and password != '':
                 add_vertical_space(1)
                 sql.add_user_login_credentials_table(user_id, password, role)
 
@@ -738,20 +740,20 @@ class admin:
 
                 with col9:
                     # Create the target folder if it doesn't exist
-                    os.makedirs(r'Result\handwriting\matched\concepts', exist_ok=True)
+                    os.makedirs(os.path.join('Result','handwriting','matched','concepts'), exist_ok=True)
 
                     # Check Subfolders inside the concepts folder or not
-                    if len(os.listdir(r'Result\handwriting\matched\concepts'))==0:
+                    if len(os.listdir(os.path.join('Result','handwriting','matched','concepts')))==0:
                         option = ['admin', 'teacher', 'student']
                     else:
                         option = ['admin', 'teacher', 'student'] +\
-                                [f'assistant - {i}' for i in os.listdir(r'Result\handwriting\matched\concepts')] +\
-                                [f'supersub - {i}' for i in os.listdir(r'Result\handwriting\matched\concepts')] + ['inactive']
+                                [f'assistant - {i}' for i in os.listdir(os.path.join('Result','handwriting','matched','concepts'))] +\
+                                [f'supersub - {i}' for i in os.listdir(os.path.join('Result','handwriting','matched','concepts'))] + ['inactive']
 
                     # Get User Input 
                     role = st.selectbox(label='Role ', options=option)
 
-            if update_user and password is not None:
+            if update_user and password != '':
                 add_vertical_space(1)
                 sql.update_user_login_credentials_table(user_id, password, role)
 
@@ -762,10 +764,10 @@ class admin:
 
     def get_role_delete_user(user_id):
 
-        connection = psycopg2.connect(host='localhost',
-                                      user='postgres',
-                                      password='root',
-                                      database='project')
+        connection = psycopg2.connect(host=os.getenv('HOST'),
+                                      user=os.getenv('USER'),
+                                      password=os.getenv('PASSWORD'),
+                                      database=os.getenv('DATABASE'))
         cursor = connection.cursor()
 
         cursor.execute(f'''select role from login_credentials
@@ -868,9 +870,9 @@ class teacher:
     def model_training():
 
         with st.spinner('Loading the images and labels'):
-            data_path = 'Dataset\images'
+            data_path = os.path.join('Dataset','images')
 
-            writers = os.listdir(path='Dataset\images')
+            writers = os.listdir(path=os.path.join('Dataset','images'))
             images = []
             labels = []
 
@@ -917,7 +919,7 @@ class teacher:
             os.makedirs(r'Model', exist_ok=True)
 
             # Save the trained model
-            model.save(r'Model\trained_model.h5')
+            model.save(os.path.join('Model','trained_model.h5'))
 
 
     def model():
@@ -930,9 +932,9 @@ class teacher:
                 add_vertical_space(1)
                 submit = st.button(label='Submit ')
 
-            if option is not None and submit:
+            if submit and option != '':
 
-                if option in os.listdir('Dataset\images'):
+                if option in os.listdir(os.path.join('Dataset','images')):
                     add_vertical_space(2)
                     teacher.model_training()
                     st.markdown(f'<h5 style="color: green;">Model Trained Successfully</h5>', unsafe_allow_html=True)
@@ -956,7 +958,7 @@ class teacher:
         try:
             os.makedirs(r'Model', exist_ok=True)  # Create the target folder if it doesn't exist
 
-            model = load_model(r'Model\trained_model.h5')  # Load the trained model
+            model = load_model(os.path.join('Model','trained_model.h5'))  # Load the trained model
 
             image = Image.open(input_image)  # Convert PIL image to BytesIO object
 
@@ -1013,7 +1015,7 @@ class teacher:
                     predicted_writer_id = teacher.predict_writer(answer_sheet_image)
 
                     # List of writer names corresponding to their IDs
-                    writer_names = os.listdir('Dataset\images')
+                    writer_names = os.listdir(os.path.join('Dataset','images'))
 
                     # Get the predicted writer's name
                     predicted_writer_name = writer_names[predicted_writer_id]
@@ -1023,25 +1025,25 @@ class teacher:
                         img = Image.open(answer_sheet_image)
 
                         # Create the target folder if it doesn't exist
-                        os.makedirs(r'Result\handwriting\matched\concepts', exist_ok=True)
-                        img.save(os.path.join(r'Result\handwriting\matched\concepts', concept, answer_sheet_name))
+                        os.makedirs(os.path.join('Result','handwriting','matched','concepts'), exist_ok=True)
+                        img.save(os.path.join('Result','handwriting','matched','concepts',concept,answer_sheet_name))
 
                         # Create the student_id folder if it doesn't exist
-                        os.makedirs(os.path.join(r'Result\handwriting\matched\students', student_id), exist_ok=True)
-                        img.save(os.path.join(r'Result\handwriting\matched\students', student_id, answer_sheet_name))
+                        os.makedirs(os.path.join('Result','handwriting','matched','students',student_id), exist_ok=True)
+                        img.save(os.path.join('Result','handwriting','matched','students',student_id,answer_sheet_name))
 
                     else:
                         img = Image.open(answer_sheet_image)
 
                         # Create the target folder if it doesn't exist
-                        os.makedirs(r'Result\handwriting\mismatched', exist_ok=True)
-                        img.save(os.path.join(r'Result\handwriting\mismatched', answer_sheet_name))
+                        os.makedirs(os.path.join('Result','handwriting','mismatched'), exist_ok=True)   # os.path.join('Result','handwriting','mismatched')
+                        img.save(os.path.join('Result','handwriting','mismatched', answer_sheet_name))
 
                 # Create the target folder if it doesn't exist
-                os.makedirs(r'Result\handwriting\mismatched', exist_ok=True)
+                os.makedirs(os.path.join('Result','handwriting','mismatched'), exist_ok=True)
 
                 # Make List for Mismatched Handwriting Images
-                mismatch_image_list = os.listdir(r'Result\handwriting\mismatched')
+                mismatch_image_list = os.listdir(os.path.join('Result','handwriting','mismatched'))
 
                 # If All Images are Matched
                 if len(mismatch_image_list) == 0:
@@ -1071,10 +1073,10 @@ class teacher:
     def delete_data_test_qa_table():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''delete from test_qa;''')
@@ -1095,7 +1097,7 @@ class teacher:
 
         add_vertical_space(1)
         test_qa = st.file_uploader(label='', type=['csv', 'xlsx'])
-
+        
         if test_qa is not None:
 
             with st.spinner('Uploading the Test QA...'):
@@ -1116,10 +1118,10 @@ class teacher:
 
     def user_id():
 
-        connection = psycopg2.connect(host='localhost',
-                                      user='postgres',
-                                      password='root',
-                                      database='project')
+        connection = psycopg2.connect(host=os.getenv('HOST'),
+                                      user=os.getenv('USER'),
+                                      password=os.getenv('PASSWORD'),
+                                      database=os.getenv('DATABASE'))
         cursor = connection.cursor()
 
         cursor.execute(f'''select distinct user_id from login_credentials
@@ -1134,10 +1136,10 @@ class teacher:
 
 
     def view_user():
-        connection = psycopg2.connect(host='localhost',
-                                      user='postgres',
-                                      password='root',
-                                      database='project')
+        connection = psycopg2.connect(host=os.getenv('HOST'),
+                                      user=os.getenv('USER'),
+                                      password=os.getenv('PASSWORD'),
+                                      database=os.getenv('DATABASE'))
         cursor = connection.cursor()
 
         cursor.execute(f'''select user_id, role from login_credentials
@@ -1157,10 +1159,10 @@ class teacher:
     def update_user_role(user_id, role):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''update login_credentials
@@ -1196,14 +1198,14 @@ class teacher:
 
                 with col2:
                     # Create the target folder if it doesn't exist
-                    os.makedirs(r'Result\handwriting\matched\concepts', exist_ok=True)
+                    os.makedirs(os.path.join('Result','handwriting','matched','concepts'), exist_ok=True)
 
                     # Check Subfolders inside the concepts folder or not
-                    if len(os.listdir(r'Result\handwriting\matched\concepts'))==0:
+                    if len(os.listdir(os.path.join('Result','handwriting','matched','concepts')))==0:
                         option = ['admin', 'teacher', 'student']
                     else:
-                        option = ['student'] + [f'assistant - {i}' for i in os.listdir(r'Result\handwriting\matched\concepts')] +\
-                                [f'supersub - {i}' for i in os.listdir(r'Result\handwriting\matched\concepts')] + ['inactive']
+                        option = ['student'] + [f'assistant - {i}' for i in os.listdir(os.path.join('Result','handwriting','matched','concepts'))] +\
+                                [f'supersub - {i}' for i in os.listdir(os.path.join('Result','handwriting','matched','concepts'))] + ['inactive']
 
                     # Get User Input 
                     role = st.selectbox(label='Role  ', options=option)
@@ -1225,10 +1227,10 @@ class teacher:
     def get_test_id_list():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select distinct test_id from student_test;''')
@@ -1259,10 +1261,10 @@ class teacher:
     def get_student_id_list_test():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select distinct student_id from student_test;''')
@@ -1293,10 +1295,10 @@ class teacher:
     def student_test_status():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select student_id, test_id, concept, sum(mark) as mark
@@ -1328,10 +1330,10 @@ class teacher:
     def filter_student_test_status(condition):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select student_id, test_id, concept, sum(mark) as mark
@@ -1364,10 +1366,10 @@ class teacher:
     def get_exam_id_list():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select distinct exam_id from student_exam;''')
@@ -1398,10 +1400,10 @@ class teacher:
     def get_student_id_list_exam():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select distinct student_id from student_exam;''')
@@ -1432,10 +1434,10 @@ class teacher:
     def student_exam_status():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select student_id, exam_id, concept, question_no, mark, evaluator_id
@@ -1467,10 +1469,10 @@ class teacher:
     def filter_student_exam_status(condition):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select student_id, exam_id, concept, question_no, mark, evaluator_id
@@ -1503,10 +1505,10 @@ class teacher:
     def student_exam_status_average():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select student_id, exam_id, concept, question_no, avg(mark) as mark
@@ -1538,10 +1540,10 @@ class teacher:
     def student_exam_status_maximum():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select student_id, exam_id, concept, question_no, max(mark) as mark
@@ -1573,10 +1575,10 @@ class teacher:
     def filter_student_exam_status_average(condition):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select student_id, exam_id, concept, question_no, avg(mark) as mark
@@ -1609,10 +1611,10 @@ class teacher:
     def filter_student_exam_status_maximum(condition):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select student_id, exam_id, concept, question_no, max(mark) as mark
@@ -1645,10 +1647,10 @@ class teacher:
     def migrate_student_exam_status_average(exam_id):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select student_id, exam_id, concept, question_no, avg(mark) as mark
@@ -1680,10 +1682,10 @@ class teacher:
     def migrate_student_exam_status_maximum(exam_id):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select student_id, exam_id, concept, question_no, max(mark) as mark
@@ -1715,10 +1717,10 @@ class teacher:
     def update_answer_sheet_upload_portal(status):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''update status
@@ -1747,10 +1749,10 @@ class teacher:
     def mark_delete_student_marks_table(exam_id):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''delete from student_marks
@@ -1771,10 +1773,10 @@ class teacher:
     def migrate_student_marks_table(df, identifier, status):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.executemany(f'''insert into student_marks(student_id, exam_id, concept, question_no, mark) 
@@ -1802,10 +1804,10 @@ class teacher:
     def view_status_table():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select * from status;''')
@@ -2021,10 +2023,10 @@ class student:
     def retrive_qa():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select * from test_qa;''')
@@ -2052,10 +2054,10 @@ class student:
     def student_test_status_verification(student_id, test_id):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select * from student_test
@@ -2084,7 +2086,7 @@ class student:
     def test_id_and_question_selection(df):
 
         # Display Test ID and Student can select the Question Number
-        col1, col3 = st.columns([0.85, 0.15])
+        col1, col3 = st.columns([0.8, 0.2])
 
         with col1:
             add_vertical_space(2)
@@ -2104,7 +2106,7 @@ class student:
             # question number match to index number to retrieve QA from dataframe
             i = question_number - 1
 
-            question_no = df.iloc[i, 1]
+            question_no = df.iloc[i, 2]
             question_text = df.iloc[i, 3]
             option_a = df.iloc[i, 4]
             option_b = df.iloc[i, 5]
@@ -2120,23 +2122,6 @@ class student:
             submit = st.form_submit_button(label='Submit')
 
             return student_option, submit
-
-
-    def answer_migrate_student_test_table(df, finish):
-
-        # make a dataframe & Sort by question_no and Reset index
-        test_data_df = pd.DataFrame(st.session_state.test_data)
-        test_data_df = test_data_df.sort_values(by='question_no', ascending=True)
-        test_data_df = test_data_df.reset_index(drop=True)
-
-        if finish and len(df) == len(test_data_df):
-
-            # migrate the data into student_test table in SQL
-            sql.migrate_student_test_table(test_data_df)
-
-        elif finish:
-            st.markdown(f'<h5 style="color: orange;">Test Incomplete! Answer all questions before submitting</h5>',
-                        unsafe_allow_html=True)
 
 
     def write_test(user_id, df, test_status_df):
@@ -2162,7 +2147,7 @@ class student:
                     st.session_state.test_data['student_id'].append(user_id)
                     st.session_state.test_data['test_id'].append(df.iloc[0, 0])
                     st.session_state.test_data['question_no'].append(question_number)
-                    st.session_state.test_data['concept'].append(df.iloc[i, 2])
+                    st.session_state.test_data['concept'].append(df.iloc[i, 1])
                     st.session_state.test_data['question'].append(df.iloc[i, 3])
                     st.session_state.test_data['answer'].append(student_option)
                     st.session_state.test_data['mark'].append(1 if student_option == df.iloc[i, 8] else 0)
@@ -2178,17 +2163,32 @@ class student:
 
             # Display the Test Status
             with st.expander(label='View Test Status'):
-                test_status_df = pd.DataFrame(st.session_state.test_data)
-                test_status_df.drop(columns=['student_id', 'test_id', 'mark'], inplace=True)
-                test_status_df = test_status_df.sort_values(by='question_no', ascending=True)
-                test_status_df = test_status_df.reset_index(drop=True)
-                st.dataframe(test_status_df)
+                expander_df = pd.DataFrame(st.session_state.test_data, 
+                                              columns=['student_id', 'test_id', 'concept', 'question_no', 
+                                                       'question', 'answer', 'mark'])
+                expander_df.drop(columns=['student_id', 'test_id', 'mark'], inplace=True)
+                expander_df = expander_df.sort_values(by='question_no', ascending=True)
+                expander_df = expander_df.reset_index(drop=True)
+                st.dataframe(expander_df)
 
             # Finish test
             add_vertical_space(1)
             finish = st.button(label='Finish')
 
-            student.answer_migrate_student_test_table(df, finish)
+            # make a dataframe & Sort by question_no and Reset index
+            test_df = pd.DataFrame(st.session_state.test_data, 
+                                       columns=['student_id', 'test_id', 'concept', 'question_no', 
+                                                'question', 'answer', 'mark'])
+            test_df = test_df.sort_values(by='question_no', ascending=True)
+            test_df = test_df.reset_index(drop=True)
+
+            # migrate the data into student_test table in SQL
+            if finish and len(df) == len(test_df):
+                sql.migrate_student_test_table(test_df)
+
+            elif finish:
+                st.markdown(f'<h5 style="color: orange;">Test Incomplete! Answer all questions before submitting</h5>',
+                            unsafe_allow_html=True)
 
         else:
             add_vertical_space(2)
@@ -2198,10 +2198,10 @@ class student:
     def student_test_status(student_id):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select test_id, concept, sum(mark) as mark
@@ -2237,10 +2237,10 @@ class student:
     def student_exam_status(student_id):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select * from student_marks
@@ -2328,10 +2328,10 @@ class supersub:
 
     def user_role_identification(user_id):
 
-        connection = psycopg2.connect(host='localhost',
-                                      user='postgres',
-                                      password='root',
-                                      database='project')
+        connection = psycopg2.connect(host=os.getenv('HOST'),
+                                      user=os.getenv('USER'),
+                                      password=os.getenv('PASSWORD'),
+                                      database=os.getenv('DATABASE'))
         cursor = connection.cursor()
 
         cursor.execute(f'''select role from login_credentials
@@ -2344,10 +2344,10 @@ class supersub:
     def update_student_exam_table(student_id, exam_id, question_no, concept, mark, evaluator_id):
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''insert into student_exam(student_id, exam_id, concept, question_no, mark, evaluator_id) 
@@ -2405,7 +2405,7 @@ class supersub:
         next_button = st.button(label='Next')
 
         if next_button:
-            evaluation_image_path = os.path.join(r'Result\evaluation', user_id, concept, pending_evaluation_list[0])
+            evaluation_image_path = os.path.join('Result','evaluation',user_id,concept,pending_evaluation_list[0])
             img.save(evaluation_image_path)
 
             # Trigger a rerun to Refresh the Page and Display the Next Answer Sheet
@@ -2431,10 +2431,17 @@ class supersub:
             update = st.form_submit_button(label='Update')
             add_vertical_space(1)
 
-        if update and exam_id is not None and mark is not None:
+        add_vertical_space(2)
+        if update and exam_id != '' and mark != '':
             supersub.update_student_exam_table(student_id, exam_id, question_no, concept, int(mark),
                                                evaluator_id=user_id)
 
+        elif update:
+            if exam_id == '':
+                st.markdown(f'<h5 style="text-align:center; color:orange;">Exam ID is Empty</h5>', unsafe_allow_html=True)
+            elif  exam_id != '' and mark == '':
+                st.markdown(f'<h5 style="text-align:center; color:orange;">Mark is Empty</h5>', unsafe_allow_html=True)
+        
 
     def evaluation(user_id):
 
@@ -2445,14 +2452,14 @@ class supersub:
         concept = user_role.split('-')[-1].strip()
 
         # Create the target folder if it doesn't exist
-        os.makedirs(os.path.join(r'Result\evaluation', user_id, concept), exist_ok=True)
-        os.makedirs(r'Result\handwriting\matched\concepts', exist_ok=True)
+        os.makedirs(os.path.join('Result','evaluation',user_id,concept), exist_ok=True)
+        os.makedirs(os.path.join('Result','handwriting','matched','concepts'), exist_ok=True)
 
         # Evaluted Answer Sheet List
-        evauated_answer_sheet_list = os.listdir(os.path.join(r'Result\evaluation', user_id, concept))
+        evauated_answer_sheet_list = os.listdir(os.path.join('Result','evaluation',user_id,concept))
 
         # Make Path to Access Answer Sheets
-        evaluation_path = os.path.join(r'Result\handwriting\matched\concepts', concept)
+        evaluation_path = os.path.join('Result','handwriting','matched','concepts',concept)
 
         # Get a List of all Answer Sheet names and Sort by Question Number Ascending
         answer_sheet_list = os.listdir(evaluation_path)
@@ -2479,10 +2486,10 @@ class supersub:
     def check_upload_portal_status():
 
         try:
-            connection = psycopg2.connect(host='localhost',
-                                          user='postgres',
-                                          password='root',
-                                          database='project')
+            connection = psycopg2.connect(host=os.getenv('HOST'),
+                                          user=os.getenv('USER'),
+                                          password=os.getenv('PASSWORD'),
+                                          database=os.getenv('DATABASE'))
             cursor = connection.cursor()
 
             cursor.execute(f'''select status from status
@@ -2518,10 +2525,10 @@ class supersub:
                     student_id=st.text_input(label='Student ID')
                 with col2:
                     # Create the target folder if it doesn't exist
-                    os.makedirs(r'Result\handwriting\matched\concepts', exist_ok=True)
-                    os.makedirs(r'Result\handwriting\mismatched', exist_ok=True)
+                    os.makedirs(os.path.join('Result','handwriting','matched','concepts'), exist_ok=True)
+                    os.makedirs(os.path.join('Result','handwriting','mismatched'), exist_ok=True)
                     # User Select the Concept
-                    concept = st.selectbox(label="Select Concept", options=os.listdir(r'Result\handwriting\matched\concepts'))
+                    concept = st.selectbox(label="Select Concept", options=os.listdir(os.path.join('Result','handwriting','matched','concepts')))
                 with col3:
                     question_start = st.text_input(label="Question Start (Ex: 1)")
                 with col4:
@@ -2559,11 +2566,11 @@ class supersub:
                             file_name = f"{student_id}_{concept}_Q{question_number}.{uploaded_file.type.split('/')[-1]}"
 
                             # Create the target folder if it doesn't exist
-                            os.makedirs(r'Result\teacher', exist_ok=True)
+                            os.makedirs(os.path.join('Result','teacher'), exist_ok=True)
 
                             # save the answer sheet in file path
                             img = Image.open(uploaded_file)
-                            img.save(os.path.join(r'Result\teacher', file_name))
+                            img.save(os.path.join('Result','teacher',file_name))
 
                         add_vertical_space(2)
                         st.markdown(f'<h5 style="text-align:center; color:green;">Answer Sheet Uploaded Successfully</h5>', unsafe_allow_html=True)

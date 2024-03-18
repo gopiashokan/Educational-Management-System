@@ -1,16 +1,10 @@
-test_id,question_id,concept,question,option_a,option_b,option_c,option_d,answer
-test_1,1,python,What is Python?,snake species,A programming language,A type of food,A country in Asia,A programming language
-test_1,2,python,"How do you print ""Hello, World!"" in Python?","echo ""Hello, World!""","print(""Hello, World!"")","console.log(""Hello, World!"")","printf(""Hello, World!"")","print(""Hello, World!"")"
-test_1,3,python,What is the purpose of the `if` statement in Python?,To declare a variable,To define a function,To loop through a sequence,To make decisions based on conditions,To make decisions based on conditions
-test_1,4,python,"How do you open a file named ""example.txt"" in Python for reading?","file = open(""example.txt"", ""w"")","file = open(""example.txt"", ""r"")","file = read_file(""example.txt"")","file = read(""example.txt"")","file = open(""example.txt"", ""r"")"
-test_1,5,python,What is the purpose of the `len()` function in Python?,To find the length of a list or string,To calculate logarithms,To define a variable,To create a loop,To find the length of a list or string
-test_1,6,sql,What SQL keyword is used to retrieve data from a table?,FETCH,SELECT,GET,SHOW,SELECT
-test_1,7,sql,How do you filter rows in SQL based on a specified condition?,GROUP BY,FILTER,WHERE,HAVING,WHERE
-test_1,8,sql,What SQL statement is used to insert new records into a table?,ADD,INSERT INTO,UPDATE,MODIFY,INSERT INTO
-test_1,9,sql,"In SQL, what does the acronym ""PK"" stand for?",Primary Key,Previous Key,Primary Keyword,Primary Column,Primary Key
-test_1,10,sql,How do you delete all records from a table in SQL without deleting the table itself?,REMOVE,TRUNCATE,DELETE,DROP,TRUNCATE
-test_1,11,machine learning,What is machine learning?,A type of robot,A way for computers to learn from data,A programming language,A mathematical equation,A way for computers to learn from data
-test_1,12,machine learning,What is the primary objective of training a machine learning model?,To write complex code automatically,To make predictions or decisions based on data,To replace human intuition,To perform calculations quickly,To make predictions or decisions based on data
-test_1,13,machine learning,"What does the term ""feature"" refer to in machine learning?",The correctness of predictions, The input variables or attributes used to make predictions,The speed of the model,The complexity of the model,The input variables or attributes used to make predictions
-test_1,14,machine learning,"What does the term ""recall"" refer to in machine learning?",The correctness of predictions,To measure the correctness of predictions,To evaluate the complexity of the model,To quantify the amount of data used,To measure the correctness of predictions
-test_1,15,machine learning,Which type of machine learning algorithm is used for categorizing data into groups or classes?,Regression,Clustering,Classification,Association,Classification
+test_id,concept,question_no,question,option_a,option_b,option_c,option_d,answer
+test_1,python,1,What is Python?,snake species,A programming language,A type of food,A country in Asia,A programming language
+test_1,python,2,"How do you print ""Hello, World!"" in Python?","echo ""Hello, World!""","print(""Hello, World!"")","console.log(""Hello, World!"")","printf(""Hello, World!"")","print(""Hello, World!"")"
+test_1,python,3,What is the purpose of the `if` statement in Python?,To declare a variable,To define a function,To loop through a sequence,To make decisions based on conditions,To make decisions based on conditions
+test_1,sql,4,What SQL keyword is used to retrieve data from a table?,FETCH,SELECT,GET,SHOW,SELECT
+test_1,sql,5,How do you filter rows in SQL based on a specified condition?,GROUP BY,FILTER,WHERE,HAVING,WHERE
+test_1,sql,6,What SQL statement is used to insert new records into a table?,ADD,INSERT INTO,UPDATE,MODIFY,INSERT INTO
+test_1,machine learning,7,What is machine learning?,A type of robot,A way for computers to learn from data,A programming language,A mathematical equation,A way for computers to learn from data
+test_1,machine learning,8,What is the primary objective of training a machine learning model?,To write complex code automatically,To make predictions or decisions based on data,To replace human intuition,To perform calculations quickly,To make predictions or decisions based on data
+test_1,machine learning,9,"What does the term ""feature"" refer to in machine learning?",The correctness of predictions, The input variables or attributes used to make predictions,The speed of the model,The complexity of the model,The input variables or attributes used to make predictions

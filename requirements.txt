@@ -1,0 +1,13 @@
+python-dotenv
+opencv-python
+numpy
+pandas
+psycopg2
+openpyxl
+bcrypt
+streamlit
+streamlit_option_menu
+streamlit_extras
+pillow
+scikit-learn
+tensorflow
