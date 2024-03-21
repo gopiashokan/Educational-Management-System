@@ -67,7 +67,7 @@ To use this project, follow these steps:
    - **User Deletion and Inactivation:** Admins maintain the integrity and security of the user database by adeptly managing user accounts, including deletion and temporary deactivation as necessary.
 
 **Deep Learning Model Management:**
-   - **Model Training and Retraining:** Teachers adeptly train or retrain CNN deep learning models with student handwriting data, enhancing model accuracy for handwriting verification purposes.
+   - **Model Training and Retraining:** Teachers adeptly train or retrain Convolutional Neural Network (CNN) deep learning models with student handwriting data, enhancing model accuracy for handwriting verification purposes.
    - **Handwriting Verification:** Teachers ensure the authenticity and accuracy of student assessments and exam answer sheets by leveraging trained CNN models for precise handwriting verification for both assessment and exam answer sheets.
 
 **Test Management:**
