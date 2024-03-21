@@ -2,7 +2,7 @@
 
 **Introduction**
 
-Welcome to the Educational Management System (EMS) repository! Our project aims to revolutionize how educational institutions manage administrative and academic processes, focusing on automation, communication, and real-time insights to enhance the educational experience. In today's dynamic landscape, institutions face challenges in managing tasks like student admission, course management, and exam scheduling, including evaluation. Our EMS offers a centralized platform that automates key tasks, facilitates seamless communication, and provides valuable insights for data-driven decision-making. Join us in shaping the future of educational management by exploring the repository and contributing to its development.
+Welcome to the Educational Management System (EMS) repository! Our project, developed as part of the IIT Internship Program, aims to revolutionize how educational institutions manage administrative and academic processes, focusing on automation, communication, and real-time insights to enhance the educational experience. In today's dynamic landscape, institutions face challenges in managing tasks like student admission, course management, and exam scheduling, including evaluation. Our EMS offers a centralized platform that automates key tasks, facilitates seamless communication, and provides valuable insights for data-driven decision-making. Join us in shaping the future of educational management by exploring the repository and contributing to its development.
 
 
 **Table of Contents**
