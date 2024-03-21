@@ -61,37 +61,33 @@ To use this project, follow these steps:
 **Features**
 
 **User Management:**
-   - **Add New Users:** Admins can easily add new users to the system, facilitating the onboarding process for teachers, assistants, supersubs, and students.
-   - **Update User Roles:** Admins have the authority to update user roles, ensuring appropriate access levels and permissions for different stakeholders.
-   - **Password Management:** Admins can reset passwords for users who have forgotten their login credentials, ensuring seamless access to the system.
-   - **User Deletion and Inactivation:** Admins can delete user accounts or temporarily deactivate them for a specified duration, maintaining the integrity and security of the user database.
-
+   - **Add New Users:** Admins possess the capability to seamlessly onboard teachers, assistants, supersubs, and students into the system by effortlessly adding new users.
+   - **Update User Roles:** Admins wield authority over user roles, ensuring precise access levels and permissions for diverse stakeholders.
+   - **Password Management:** Admins facilitate seamless access to the system by offering password resets for users who have forgotten their login credentials.
+   - **User Deletion and Inactivation:** Admins maintain the integrity and security of the user database by adeptly managing user accounts, including deletion and temporary deactivation as necessary.
 
 **Deep Learning Model Management:**
-   - **Model Training and Retraining:** Teachers can train or retrain CNN deep learning models with student handwriting data and save the models for handwriting verification.
-   - **Handwriting Verification:** Teachers can utilize the trained CNN models to verify student handwriting on assessments and exam answer sheets, ensuring authenticity and accuracy.
-
+   - **Model Training and Retraining:** Teachers adeptly train or retrain CNN deep learning models with student handwriting data, enhancing model accuracy for handwriting verification purposes.
+   - **Handwriting Verification:** Teachers ensure the authenticity and accuracy of student assessments and exam answer sheets by leveraging trained CNN models for precise handwriting verification for both assessment and exam answer sheets.
 
 **Test Management:**
-   - **Test Creation and Deployment:** Teachers can upload Test QA (question-answer) sets to conduct tests for students, enabling seamless administration of assessments.
-   - **Supersub Identification:** Teachers can identify supersubs (top-performing students) based on their scores in particular concepts, facilitating recognition and acknowledgment.
-
+   - **Test Creation and Deployment:** Teachers seamlessly administer assessments by uploading Test QA (question-answer) sets, facilitating efficient test creation and deployment.
+   - **Supersub Identification:** Teachers recognize and acknowledge top-performing students (supersubs) based on their scores in particular concepts, fostering academic excellence.
 
 **Role and Marks Management:**
-   - **Role Updates:** Teachers can update roles of students to supersubs and assistants as needed, ensuring smooth transitions and role assignments within the system.
-   - **Viewing Student Marks:** Teachers have access to view student marks in both tests and exams, enabling them to monitor student progress and performance effectively.
-
+   - **Role Updates:** Teachers ensure smooth transitions and role assignments within the system by promptly updating student roles to supersubs and assistants as needed.
+   - **Viewing Student Marks:** Teachers effectively monitor student progress and performance by accessing and reviewing student marks in both tests and exams.
+   - **Mark Display Approval:** Teachers can analyze and approve student exam marks for display in the student portal. They select either average or maximum marks calculated from multiple evaluators assessments. Teachers also have the option to retract their approval, preventing marks from being shown in the portal.
 
 **Test and Exam Participation:**
-   - **Test Attendance and Submission:** Students can attend tests in their portal and submit their answers, facilitating remote participation and assessment.
-   - **Physical Exam Submission:** Students can write assessments and exams on physical paper and submit them for evaluation, providing flexibility in assessment methods.
-   - **Access to Marks:** Students can view their test and exam marks in their portal, enabling them to track their academic progress and performance over time.
-
+   - **Test Attendance and Submission:** Students engage in remote assessment seamlessly by attending tests in their portal and submitting their answers with ease.
+   - **Answer Submission Process:** Students submit both assessments and exam answer sheets, who scan and upload them for evaluation by both assistants and supersubs.
+   - **Access to Marks:** Students track their academic progress and performance over time by conveniently accessing and reviewing their test and exam marks in their portal.
 
 **Exam Answer Sheet Management and Evaluation Process:**
-   - **Collection and Upload:** Assistants and supersubs can collect student exam answer sheets and scan/upload them to the portal for evaluation and grading.
-   - **Answer Sheet Evaluation:** Assistants and supersubs evaluate exam answer sheets and provide marks, ensuring fair and accurate assessment of student performance.
-   - **Multiple Evaluator System:** To avoid bias, single exam answer sheets are evaluated by multiple evaluators, enhancing the reliability and validity of assessment outcomes.
+   - **Collection and Upload:** Assistants and supersubs efficiently manage exam answer sheets by collecting, scanning, and uploading them to the portal for evaluation.
+   - **Answer Sheet Evaluation:** Assistants and supersubs ensure fair and accurate assessment by evaluating exam answer sheets and providing marks.
+   - **Multiple Evaluator System:** To uphold assessment integrity, single exam answer sheets undergo evaluation by multiple evaluators, enhancing assessment reliability and validity.
 
 
 
