@@ -71,7 +71,7 @@ To use this project, follow these steps:
    - **Handwriting Verification:** Teachers ensure the authenticity and accuracy of student assessments and exam answer sheets by leveraging trained CNN models for precise handwriting verification for both assessment and exam answer sheets.
 
 **Test Management:**
-   - **Test Creation and Deployment:** Teachers seamlessly administer assessments by uploading Test QA (question-answer) sets, facilitating efficient test creation and deployment.
+   - **Test Creation and Deployment:** Teachers seamlessly administer assessments by uploading sets of test questions and answers, facilitating efficient test creation and deployment.
    - **Supersub Identification:** Teachers recognize and acknowledge top-performing students (supersubs) based on their scores in particular concepts, fostering academic excellence.
 
 **Role and Marks Management:**
