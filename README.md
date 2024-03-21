@@ -87,7 +87,7 @@ To use this project, follow these steps:
 **Exam Answer Sheet Management and Evaluation Process:**
    - **Collection and Upload:** Assistants and supersubs efficiently manage exam answer sheets by collecting, scanning, and uploading them to the portal for evaluation.
    - **Answer Sheet Evaluation:** Assistants and supersubs ensure fair and accurate assessment by evaluating exam answer sheets and providing marks.
-   - **Multiple Evaluator System:** To uphold assessment integrity, single exam answer sheets undergo evaluation by multiple evaluators, enhancing assessment reliability and validity.
+   - **Multiple Evaluator System:** To uphold assessment integrity, each exam answer sheet undergoes evaluation by multiple evaluators, enhancing assessment reliability and validity.
 
 
 
