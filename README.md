@@ -4,6 +4,7 @@
 
 Welcome to the Educational Management System (EMS) repository! Our project, developed as part of the IIT Internship Program, aims to revolutionize how educational institutions manage administrative and academic processes, focusing on automation, communication, and real-time insights to enhance the educational experience. In today's dynamic landscape, institutions face challenges in managing tasks like student admission, course management, and exam scheduling, including evaluation. Our EMS offers a centralized platform that automates key tasks, facilitates seamless communication, and provides valuable insights for data-driven decision-making. Join us in shaping the future of educational management by exploring the repository and contributing to its development.
 
+<br />
 
 **Table of Contents**
 
@@ -15,6 +16,7 @@ Welcome to the Educational Management System (EMS) repository! Our project, deve
 6. License
 7. Contact
 
+<br />
 
 **Key Technologies and Skills**
 - Python
@@ -28,6 +30,7 @@ Welcome to the Educational Management System (EMS) repository! Our project, deve
 - Pillow
 - Streamlit
 
+<br />
 
 **Installation**
 
@@ -48,6 +51,8 @@ pip install scikit-learn
 pip install tensorflow
 ```
 
+<br />
+
 **Usage**
 
 To use this project, follow these steps:
@@ -57,6 +62,7 @@ To use this project, follow these steps:
 3. Run the Streamlit app: ```streamlit run app.py```
 4. Access the app in your browser at ```http://localhost:8501```
 
+<br />
 
 **Features**
 
@@ -99,11 +105,13 @@ To use this project, follow these steps:
 
 Contributions to this project are welcome! If you encounter any issues or have suggestions for improvements, please feel free to submit a pull request.
 
+<br />
 
 **License**
 
 This project is licensed under the MIT License. Please review the LICENSE file for more details.
 
+<br />
 
 **Contact**
 
