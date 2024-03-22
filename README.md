@@ -91,7 +91,7 @@ To use this project, follow these steps:
 
 <br />
 
-**Project Demo Video:** [https://youtu.be/_eOkdwg3JiA](https://youtu.be/_eOkdwg3JiA)
+🎬 **Project Demo Video:** [https://youtu.be/_eOkdwg3JiA](https://youtu.be/_eOkdwg3JiA)
 
 <br />
 
