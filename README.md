@@ -22,7 +22,7 @@ Welcome to the Educational Management System (EMS) repository! Our project, deve
 - Python
 - Scikit-learn
 - Convolutional Neural Network (CNN)
-- Tensorflow
+- TensorFlow
 - PostgreSQL
 - OpenCV
 - Numpy
