@@ -51,6 +51,12 @@ pip install scikit-learn
 pip install tensorflow
 ```
 
+**Note:** If you face "ImportError: DLL load failed" error while installing TensorFlow,
+```python
+pip uninstall tensorflow
+pip install tensorflow==2.12.0 --upgrade
+```
+
 <br />
 
 **Usage**
