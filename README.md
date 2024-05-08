@@ -20,14 +20,15 @@ Welcome to the Educational Management System (EMS) repository! Our project, deve
 
 **Key Technologies and Skills**
 - Python
-- Scikit-learn
-- Convolutional Neural Network (CNN)
 - TensorFlow
-- PostgreSQL
+- Convolutional Neural Network (CNN)
+- Keras
+- Scikit-learn
 - OpenCV
+- Pillow
+- PostgreSQL
 - Numpy
 - Pandas
-- Pillow
 - Streamlit
 
 <br />
